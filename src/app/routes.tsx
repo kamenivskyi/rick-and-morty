@@ -6,7 +6,7 @@ import { Route, Routes } from "react-router-dom";
 
 export const routes = (
   <Routes>
-    <Route path="/" element={<CharachtersPage />} />
+    <Route path="*" element={<CharachtersPage />} />
     <Route path="/episodes" element={<EpisodesPage />} />
     <Route path="/locations" element={<LocationsPage />} />
     <Route path="/watch-list" element={<WatchListPage />} />
