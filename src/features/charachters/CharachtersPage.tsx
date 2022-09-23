@@ -4,7 +4,9 @@ import {
   Container,
   Grid,
   PaginationItem,
+  CircularProgress,
 } from "@mui/material";
+import { ErrorBoundary } from "react-error-boundary";
 import queryString from "query-string";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,15 +14,12 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
   getCharachters,
   selectCharacter,
+  selectCharacterStatus,
 } from "features/charachters/charachtersSlice";
 import { CharachtersFilters } from "./CharachtersFilters";
 import { CharachterItem } from "./CharachterItem";
 import CardModal from "ui/Modal";
-
-interface ICharactersObject {
-  info: any;
-  results: any;
-}
+import ErrorFallback from "components/ErrorFallback";
 
 interface ICharachter {
   image: string;
@@ -33,7 +32,8 @@ export function CharachtersPage() {
   const [selected, setSelected] = useState(null);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const store = useAppSelector<any>(selectCharacter);
+  const charachterData = useAppSelector<any>(selectCharacter);
+  const status = useAppSelector(selectCharacterStatus);
   const page = parseInt(query.get("page") || "1", 10);
 
   const dispatch = useAppDispatch();
@@ -64,28 +64,50 @@ export function CharachtersPage() {
     setSelected(data);
   };
 
+  const shouldShowMessage =
+    status === "idle" &&
+    charachterData.message &&
+    !!charachterData.message.length;
+
+  console.log("status: ", status);
+
   return (
-    <div>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
       <Container maxWidth="lg">
         <CharachtersFilters />
 
-        {store.message && !!store.message.length && (
+        {shouldShowMessage && (
           <Typography component="p" align="center">
-            {store.message}
+            {charachterData.message}
           </Typography>
         )}
 
         <Grid container>
-          {store.results.map((item: ICharachter) => (
-            <Grid item xs={12} md={6} lg={3} key={item.id}>
-              <CharachterItem item={item} showAllData={openModalWithData} />
+          {status === "loading" && (
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                margin: "40px 0",
+              }}
+            >
+              <CircularProgress />
             </Grid>
-          ))}
+          )}
+          {status === "idle" &&
+            charachterData.results.map((item: ICharachter) => (
+              <Grid item xs={12} md={6} lg={3} key={item.id}>
+                <CharachterItem item={item} showAllData={openModalWithData} />
+              </Grid>
+            ))}
         </Grid>
-        {!!store.results && !!store.results.length && (
+        {!!charachterData.results && !!charachterData.results.length && (
           <Pagination
-            count={store.info.pages}
+            count={charachterData.info.pages}
             page={page}
+            disabled={status === "loading"}
             renderItem={(item) => (
               <PaginationItem
                 component={Link}
@@ -108,6 +130,6 @@ export function CharachtersPage() {
           handleClose={() => setSelected(null)}
         />
       )}
-    </div>
+    </ErrorBoundary>
   );
 }

@@ -32,8 +32,8 @@ export function Header() {
             sx={headerLogoDesktopStyles}
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
           >
             Rick and Morty
           </Typography>

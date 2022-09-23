@@ -72,4 +72,7 @@ export const {} = charachterSlice.actions;
 export const selectCharacter = (state: RootState) =>
   state.charachter.charachters;
 
+export const selectCharacterStatus = (state: RootState) =>
+  state.charachter.status;
+
 export default charachterSlice.reducer;

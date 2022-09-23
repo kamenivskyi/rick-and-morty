@@ -53,5 +53,6 @@ export const episodeSlice = createSlice({
 export const {} = episodeSlice.actions;
 
 export const selectEpisode = (state: RootState) => state.episode.episodeData;
+export const selectEpisodeStatus = (state: RootState) => state.episode.status;
 
 export default episodeSlice.reducer;
