@@ -11,7 +11,6 @@ export function WatchListAddForm({
   handleChange,
   input,
 }: IProps) {
-  console.log("VL ", input);
   return (
     <form onSubmit={handleSubmit}>
       <Grid container alignItems={"flex-start"} justifyContent="center">

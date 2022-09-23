@@ -33,7 +33,6 @@ const initialState: ICharactersState = {
 export const getCharachters = createAsyncThunk(
   "charachters/getCharachters",
   async (stringifiedParams: string) => {
-    console.log("stringifiedParams: ", stringifiedParams);
     const response = await fetchCharachters(stringifiedParams);
 
     if (response.error) {

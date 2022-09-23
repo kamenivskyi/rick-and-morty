@@ -39,8 +39,6 @@ export function CharachtersPage() {
   const dispatch = useAppDispatch();
   let queries = queryString.parse(location.search);
 
-  console.log("store: ", store);
-
   useEffect(() => {
     dispatch(getCharachters(location.search));
   }, [dispatch, getCharachters, page, location.search]);
