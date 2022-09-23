@@ -33,7 +33,6 @@ const initialState: ICharactersState = {
 export const getCharachters = createAsyncThunk(
   "charachters/getCharachters",
   async (stringifiedParams: string) => {
-    console.log("stringifiedParams: ", stringifiedParams);
     const response = await fetchCharachters(stringifiedParams);
 
     if (response.error) {
@@ -72,5 +71,8 @@ export const {} = charachterSlice.actions;
 
 export const selectCharacter = (state: RootState) =>
   state.charachter.charachters;
+
+export const selectCharacterStatus = (state: RootState) =>
+  state.charachter.status;
 
 export default charachterSlice.reducer;
