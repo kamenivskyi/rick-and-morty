@@ -30,8 +30,8 @@ const initialState: ICharactersState = {
   status: "idle",
 };
 
-export const getCharachtersData = createAsyncThunk(
-  "charachters/getCharachtersData",
+export const getCharachters = createAsyncThunk(
+  "charachters/getCharachters",
   async (stringifiedParams: string) => {
     console.log("stringifiedParams: ", stringifiedParams);
     const response = await fetchCharachters(stringifiedParams);
@@ -53,15 +53,15 @@ export const charachterSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getCharachtersData.pending, (state) => {
+      .addCase(getCharachters.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCharachtersData.fulfilled, (state, action) => {
+      .addCase(getCharachters.fulfilled, (state, action) => {
         state.status = "idle";
         // console.log("action.payload: ", action.payload);
         state.charachters = action.payload;
       })
-      .addCase(getCharachtersData.rejected, (state) => {
+      .addCase(getCharachters.rejected, (state) => {
         state.status = "failed";
         console.log("REJECTED: ", state);
       });

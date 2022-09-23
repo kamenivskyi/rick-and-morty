@@ -1,5 +1,6 @@
 import { Modal, Typography, Box, CardMedia } from "@mui/material";
 import { ICharachter } from "features/charachters/charachterInterface";
+import { formatFromUTC } from "utils/date";
 
 const style = {
   position: "absolute" as "absolute",
@@ -57,13 +58,7 @@ export function CardModal({ isOpen, data, handleClose }: ICardModal) {
           )}
           {data?.created && (
             <Typography sx={{ mt: 2 }}>
-              Created:{" "}
-              {new Intl.DateTimeFormat("ua-UA", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              }).format(new Date(data?.created))}
+              Created: {formatFromUTC(data?.created)}
             </Typography>
           )}
         </Box>

@@ -10,7 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
-  getCharachtersData,
+  getCharachters,
   selectCharacter,
 } from "features/charachters/charachtersSlice";
 import { CharachtersFilters } from "./CharachtersFilters";
@@ -42,8 +42,8 @@ export function CharachtersPage() {
   console.log("store: ", store);
 
   useEffect(() => {
-    dispatch(getCharachtersData(location.search));
-  }, [dispatch, getCharachtersData, page, location.search]);
+    dispatch(getCharachters(location.search));
+  }, [dispatch, getCharachters, page, location.search]);
 
   const generateParams = (item: any) => {
     if (item.page === 1) {
