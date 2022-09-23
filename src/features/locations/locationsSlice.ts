@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "app/store";
-import { fetchEpisodes } from "./episodesAPI";
-import { IEpisodesState } from "./episodesInterfaces";
+import { fetchLocations } from "./locationAPI";
+import { ILocationState } from "./locationInterfaces";
 
-const initialState: IEpisodesState = {
-  episodeData: {
+const initialState: ILocationState = {
+  locationData: {
     info: {},
     results: [],
     message: "",
@@ -12,10 +12,10 @@ const initialState: IEpisodesState = {
   status: "idle",
 };
 
-export const getEpisodes = createAsyncThunk(
-  "episode/getEpisodes",
+export const getLocations = createAsyncThunk(
+  "location/getLocations",
   async (stringifiedParams: string) => {
-    const response = await fetchEpisodes(stringifiedParams);
+    const response = await fetchLocations(stringifiedParams);
     console.log("response: ", response);
 
     if (response.error) {
@@ -29,29 +29,29 @@ export const getEpisodes = createAsyncThunk(
   }
 );
 
-export const episodeSlice = createSlice({
-  name: "episode",
+export const locationSlice = createSlice({
+  name: "location",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getEpisodes.pending, (state) => {
+      .addCase(getLocations.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getEpisodes.fulfilled, (state, action) => {
+      .addCase(getLocations.fulfilled, (state, action) => {
         state.status = "idle";
         // console.log("action.payload: ", action.payload);
-        state.episodeData = action.payload;
+        state.locationData = action.payload;
       })
-      .addCase(getEpisodes.rejected, (state) => {
+      .addCase(getLocations.rejected, (state) => {
         state.status = "failed";
         console.log("REJECTED: ", state);
       });
   },
 });
 
-export const {} = episodeSlice.actions;
+export const {} = locationSlice.actions;
 
-export const selectEpisode = (state: RootState) => state.episode.episodeData;
+export const selectLocation = (state: RootState) => state.location.locationData;
 
-export default episodeSlice.reducer;
+export default locationSlice.reducer;

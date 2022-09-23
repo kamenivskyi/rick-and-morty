@@ -4,32 +4,32 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatFromUTC } from "utils/date";
-import { IEpisodesResultsItem } from "./episodesInterfaces";
-import { getEpisodes, selectEpisode } from "./episodesSlice";
-import { columns } from "./episodesData";
 import { useDataGridRowCount, useDataPaginationHandler } from "hooks";
+import { ILocationResultsItem } from "./locationInterfaces";
+import { getLocations, selectLocation } from "./locationsSlice";
+import { columns } from "./locationsData";
 
-export default function EpisodesTable() {
-  const episodeData = useAppSelector<any>(selectEpisode);
-  const episodes = episodeData.results.map((item: IEpisodesResultsItem) => ({
+export default function LocationsTable() {
+  const locationsData = useAppSelector<any>(selectLocation);
+  const locations = locationsData.results.map((item: ILocationResultsItem) => ({
     ...item,
     created: formatFromUTC(item.created),
   }));
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const [rowCountState] = useDataGridRowCount(episodeData?.info?.count);
-  const { page, handlePageChange } = useDataPaginationHandler("/episodes");
+  const { page, handlePageChange } = useDataPaginationHandler("/locations");
+  const [rowCountState] = useDataGridRowCount(locationsData?.info?.count);
 
   useEffect(() => {
-    dispatch(getEpisodes(location.search));
-  }, [location.search, getEpisodes, dispatch]);
+    dispatch(getLocations(location.search));
+  }, [location.search, getLocations, dispatch]);
 
   return (
     <Container maxWidth="lg">
       <div style={{ margin: "20px auto" }}>
         <DataGrid
-          rows={episodes}
+          rows={locations}
           columns={columns}
           pageSize={20}
           rowCount={rowCountState}

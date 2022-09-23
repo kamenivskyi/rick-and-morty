@@ -11,7 +11,7 @@ export interface IEpisodesResultsItem {
 }
 
 export interface IEpisodesState {
-  episodes: {
+  episodeData: {
     info: IResponseInfo | Object;
     results: Array<IEpisodesResultsItem>;
     message: string;
