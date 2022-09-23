@@ -1,6 +1,6 @@
 {
   "name": "rick-and-morty",
-  "homepage": "https://kamenivskyi.github.io",
+  "homepage": "https://kamenivskyi.github.io/rick-and-morty",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
