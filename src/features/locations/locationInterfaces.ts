@@ -13,7 +13,7 @@ export interface ILocationResultsItem {
 export interface ILocationState {
   locationData: {
     info: IResponseInfo | Object;
-    results: Array<ILocationResultsItem>;
+    results: ILocationResultsItem[];
     message: string;
   };
   status: "idle" | "loading" | "failed";

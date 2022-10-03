@@ -12,8 +12,8 @@ export interface IEpisodesResultsItem {
 
 export interface IEpisodesState {
   episodeData: {
-    info: IResponseInfo | Object;
-    results: Array<IEpisodesResultsItem>;
+    info: IResponseInfo | {};
+    results: IEpisodesResultsItem[];
     message: string;
   };
   status: "idle" | "loading" | "failed";

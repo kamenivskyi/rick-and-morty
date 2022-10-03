@@ -5,6 +5,7 @@ import {
   Grid,
   PaginationItem,
   CircularProgress,
+  PaginationRenderItemParams,
 } from "@mui/material";
 import { ErrorBoundary } from "react-error-boundary";
 import queryString from "query-string";
@@ -20,30 +21,24 @@ import { CharachtersFilters } from "./CharachtersFilters";
 import { CharachterItem } from "./CharachterItem";
 import CardModal from "ui/Modal";
 import ErrorFallback from "components/ErrorFallback";
-
-interface ICharachter {
-  image: string;
-  name: string;
-  id: number;
-  status: string;
-}
+import { ICharachter, ICharactersObject } from "./charachterInterface";
 
 export function CharachtersPage() {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<ICharachter | null>(null);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const charachterData = useAppSelector<any>(selectCharacter);
+  const charachterData = useAppSelector<ICharactersObject>(selectCharacter);
   const status = useAppSelector(selectCharacterStatus);
   const page = parseInt(query.get("page") || "1", 10);
 
   const dispatch = useAppDispatch();
-  let queries = queryString.parse(location.search);
+  let queries: any = queryString.parse(location.search);
 
   useEffect(() => {
     dispatch(getCharachters(location.search));
   }, [dispatch, getCharachters, page, location.search]);
 
-  const generateParams = (item: any) => {
+  const generateParams = (item: PaginationRenderItemParams) => {
     if (item.page === 1) {
       delete queries.page;
 
@@ -59,8 +54,7 @@ export function CharachtersPage() {
     return "?" + stringified;
   };
 
-  const openModalWithData = (data: any) => {
-    console.log("show data: ", data);
+  const openModalWithData = (data: ICharachter) => {
     setSelected(data);
   };
 
@@ -68,8 +62,6 @@ export function CharachtersPage() {
     status === "idle" &&
     charachterData.message &&
     !!charachterData.message.length;
-
-  console.log("status: ", status);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { initialResponse } from "app/config";
 import { RootState } from "app/store";
 import { fetchEpisodes } from "./episodesAPI";
 import { IEpisodesState } from "./episodesInterfaces";
 
 const initialState: IEpisodesState = {
   episodeData: {
-    info: {},
-    results: [],
+    ...initialResponse,
     message: "",
   },
   status: "idle",
@@ -16,12 +16,10 @@ export const getEpisodes = createAsyncThunk(
   "episode/getEpisodes",
   async (stringifiedParams: string) => {
     const response = await fetchEpisodes(stringifiedParams);
-    console.log("response: ", response);
 
     if (response.error) {
       return {
-        info: {},
-        results: [],
+        ...initialResponse,
         message: response.error,
       };
     }
