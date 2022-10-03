@@ -27,7 +27,6 @@ export function WatchListPage() {
       setSnackbarMessage("Input length should be greater than 3 charachters");
       setShowSnackbar(true);
     }
-    console.log("submit: ", input);
   };
 
   const handleRemoveItem = (id: string) => {

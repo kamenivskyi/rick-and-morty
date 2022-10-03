@@ -7,7 +7,7 @@ interface IWatchListItem {
   completed: boolean;
 }
 export function useWatchList() {
-  const [watchList, setWatchList] = useState([]);
+  const [watchList, setWatchList] = useState<IWatchListItem[]>([]);
 
   useEffect(() => {
     const saved = JSON.parse(
@@ -39,7 +39,7 @@ export function useWatchList() {
   const addNewItem = (value: string) => {
     const newItem = createItem(value);
 
-    setWatchList((prevValue): any => {
+    setWatchList((prevValue) => {
       return [...prevValue, newItem];
     });
   };
@@ -49,7 +49,7 @@ export function useWatchList() {
   };
 
   const toggleCompleted = (id: string) => {
-    const newArray: any = watchList.map((item: IWatchListItem) => {
+    const newArray = watchList.map((item: IWatchListItem) => {
       if (item.id === id) {
         item.completed = !item.completed;
       }

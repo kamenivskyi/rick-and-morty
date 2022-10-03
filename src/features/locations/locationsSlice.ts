@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { initialResponse } from "app/config";
 import { RootState } from "app/store";
 import { fetchLocations } from "./locationAPI";
 import { ILocationState } from "./locationInterfaces";
 
 const initialState: ILocationState = {
   locationData: {
-    info: {},
-    results: [],
+    ...initialResponse,
     message: "",
   },
   status: "idle",
@@ -16,12 +16,10 @@ export const getLocations = createAsyncThunk(
   "location/getLocations",
   async (stringifiedParams: string) => {
     const response = await fetchLocations(stringifiedParams);
-    console.log("response: ", response);
 
     if (response.error) {
       return {
-        info: {},
-        results: [],
+        ...initialResponse,
         message: response.error,
       };
     }

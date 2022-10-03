@@ -13,7 +13,6 @@ export function CharachtersFilters() {
   const navigate = useNavigate();
 
   let queries = queryString.parse(location.search);
-  console.log("queries: ", queries);
 
   const handleChange = (value: string, propName: string) => {
     if (value === "all") {

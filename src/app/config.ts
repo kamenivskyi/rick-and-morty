@@ -4,3 +4,13 @@ export const pages = [
   { id: 3, to: "/locations", label: "Locations" },
   { id: 4, to: "/watch-list", label: "Watch list" },
 ];
+
+export const initialResponse = {
+  info: {
+    prev: null,
+    next: null,
+    pages: 0,
+    count: 0,
+  },
+  results: [],
+};

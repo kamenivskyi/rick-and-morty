@@ -1,6 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 
-export function ErrorFallback({ error, resetErrorBoundary }: any) {
+interface IErrorFallback {
+  error: any;
+  resetErrorBoundary: Function;
+}
+export function ErrorFallback({ error, resetErrorBoundary }: IErrorFallback) {
   console.log("Errr: ", error);
   const refreshPage = () => {
     window.location.reload();
