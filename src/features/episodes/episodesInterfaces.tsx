@@ -11,10 +11,12 @@ export interface IEpisodesResultsItem {
 }
 
 export interface IEpisodesState {
-  episodeData: {
-    info: IResponseInfo | {};
-    results: IEpisodesResultsItem[];
-    message: string;
-  };
+  episodeData: IEpisodesObject;
   status: "idle" | "loading" | "failed";
+}
+
+export interface IEpisodesObject {
+  info: IResponseInfo;
+  results: IEpisodesResultsItem[];
+  message: string;
 }

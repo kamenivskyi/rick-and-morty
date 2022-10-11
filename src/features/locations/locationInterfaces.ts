@@ -11,10 +11,12 @@ export interface ILocationResultsItem {
 }
 
 export interface ILocationState {
-  locationData: {
-    info: IResponseInfo | Object;
-    results: ILocationResultsItem[];
-    message: string;
-  };
+  locationData: ILocationsObject;
   status: "idle" | "loading" | "failed";
+}
+
+export interface ILocationsObject {
+  info: IResponseInfo;
+  results: ILocationResultsItem[];
+  message: string;
 }

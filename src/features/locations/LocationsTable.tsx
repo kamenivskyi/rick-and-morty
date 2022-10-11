@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatFromUTC } from "utils/date";
 import { useDataGridRowCount, useDataPaginationHandler } from "hooks";
-import { ILocationResultsItem } from "./locationInterfaces";
+import { ILocationResultsItem, ILocationsObject } from "./locationInterfaces";
 import { getLocations, selectLocation } from "./locationsSlice";
 import { columns } from "./locationsData";
 
 export default function LocationsTable() {
-  const locationsData = useAppSelector<any>(selectLocation);
+  const locationsData = useAppSelector<ILocationsObject>(selectLocation);
   const locations = locationsData.results.map((item: ILocationResultsItem) => ({
     ...item,
     created: formatFromUTC(item.created),

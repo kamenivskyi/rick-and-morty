@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatFromUTC } from "utils/date";
-import { IEpisodesResultsItem } from "./episodesInterfaces";
+import { IEpisodesObject, IEpisodesResultsItem } from "./episodesInterfaces";
 import { getEpisodes, selectEpisode } from "./episodesSlice";
 import { columns } from "./episodesData";
 import { useDataGridRowCount, useDataPaginationHandler } from "hooks";
 
 export default function EpisodesTable() {
-  const episodeData = useAppSelector<any>(selectEpisode);
+  const episodeData = useAppSelector<IEpisodesObject>(selectEpisode);
   const episodes = episodeData.results.map((item: IEpisodesResultsItem) => ({
     ...item,
     created: formatFromUTC(item.created),
