@@ -15,24 +15,30 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import {
   getCharachters,
   selectCharacter,
+  selectCharacterError,
   selectCharacterStatus,
 } from "features/charachters/charachtersSlice";
 import { CharachtersFilters } from "./CharachtersFilters";
 import { CharachterItem } from "./CharachterItem";
 import CardModal from "ui/Modal";
 import ErrorFallback from "components/ErrorFallback";
-import { ICharachter, ICharactersObject } from "./charachterInterface";
+import {
+  ICharachter,
+  ICharactersResponse,
+  ISearchQueries,
+} from "./charachterInterface";
 
 export function CharachtersPage() {
   const [selected, setSelected] = useState<ICharachter | null>(null);
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const charachterData = useAppSelector<ICharactersObject>(selectCharacter);
+  const charachterData = useAppSelector<ICharactersResponse>(selectCharacter);
+  const error = useAppSelector(selectCharacterError);
   const status = useAppSelector(selectCharacterStatus);
   const page = parseInt(query.get("page") || "1", 10);
 
   const dispatch = useAppDispatch();
-  let queries: any = queryString.parse(location.search);
+  let queries: ISearchQueries = queryString.parse(location.search);
 
   useEffect(() => {
     dispatch(getCharachters(location.search));
@@ -58,10 +64,7 @@ export function CharachtersPage() {
     setSelected(data);
   };
 
-  const shouldShowMessage =
-    status === "idle" &&
-    charachterData.message &&
-    !!charachterData.message.length;
+  const shouldShowMessage = status !== "loading" && error && !!error.length;
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -70,7 +73,7 @@ export function CharachtersPage() {
 
         {shouldShowMessage && (
           <Typography component="p" align="center">
-            {charachterData.message}
+            {error}
           </Typography>
         )}
 
@@ -89,6 +92,8 @@ export function CharachtersPage() {
             </Grid>
           )}
           {status === "idle" &&
+            !error &&
+            !!charachterData.results &&
             charachterData.results.map((item: ICharachter) => (
               <Grid item xs={12} md={6} lg={3} key={item.id}>
                 <CharachterItem item={item} showAllData={openModalWithData} />
@@ -97,7 +102,7 @@ export function CharachtersPage() {
         </Grid>
         {!!charachterData.results && !!charachterData.results.length && (
           <Pagination
-            count={charachterData.info.pages}
+            count={charachterData?.info?.pages}
             page={page}
             disabled={status === "loading"}
             renderItem={(item) => (

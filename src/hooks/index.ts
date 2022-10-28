@@ -1,4 +1,4 @@
 import { useDataGridRowCount } from "./useDataGridRowCount";
-import { useDataPaginationHandler } from "./useDataGridPaginationHandler";
+import { useQueriesPagination } from "./useQueriesPagination";
 
-export { useDataGridRowCount, useDataPaginationHandler };
+export { useDataGridRowCount, useQueriesPagination };

@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { pages } from "app/config";
 import { headerLogoPhoneStyles, headerLogoDesktopStyles } from "./HeaderStyles";
 
-export function Header() {
+function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -106,3 +106,4 @@ export function Header() {
     </AppBar>
   );
 }
+export default Header;
