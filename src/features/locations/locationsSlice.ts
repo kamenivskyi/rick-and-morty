@@ -2,28 +2,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { initialResponse } from "app/config";
 import { RootState } from "app/store";
 import { fetchLocations } from "./locationAPI";
-import { ILocationState } from "./locationInterfaces";
+import { ILocationsResponce, ILocationState } from "./locationInterfaces";
 
 const initialState: ILocationState = {
-  locationData: {
-    ...initialResponse,
-    message: "",
-  },
+  locationData: initialResponse,
+  error: "",
   status: "idle",
 };
 
 export const getLocations = createAsyncThunk(
   "location/getLocations",
   async (stringifiedParams: string) => {
-    const response = await fetchLocations(stringifiedParams);
-
-    if (response.error) {
-      return {
-        ...initialResponse,
-        message: response.error,
-      };
-    }
-    return response;
+    return await fetchLocations<ILocationsResponce>(stringifiedParams);
   }
 );
 
@@ -38,7 +28,6 @@ export const locationSlice = createSlice({
       })
       .addCase(getLocations.fulfilled, (state, action) => {
         state.status = "idle";
-        // console.log("action.payload: ", action.payload);
         state.locationData = action.payload;
       })
       .addCase(getLocations.rejected, (state) => {
@@ -51,5 +40,6 @@ export const locationSlice = createSlice({
 export const {} = locationSlice.actions;
 
 export const selectLocation = (state: RootState) => state.location.locationData;
+export const selectLocationError = (state: RootState) => state.location.error;
 
 export default locationSlice.reducer;

@@ -1,29 +1,20 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { initialResponse } from "app/config";
 import { RootState } from "app/store";
-import { ICharactersState } from "./charachterInterface";
+import { InitialResponse } from "utils/fetchData";
+import { ICharactersResponse, ICharactersState } from "./charachterInterface";
 import { fetchCharachters } from "./charachtersAPI";
 
 const initialState: ICharactersState = {
-  charachters: {
-    ...initialResponse,
-    message: "",
-  },
+  charachters: initialResponse,
+  error: "",
   status: "idle",
 };
 
 export const getCharachters = createAsyncThunk(
   "charachters/getCharachters",
   async (stringifiedParams: string) => {
-    const response = await fetchCharachters(stringifiedParams);
-
-    if (response.error) {
-      return {
-        ...initialResponse,
-        message: response.error,
-      };
-    }
-    return response;
+    return await fetchCharachters<ICharactersResponse>(stringifiedParams);
   }
 );
 
@@ -36,13 +27,20 @@ export const charachterSlice = createSlice({
       .addCase(getCharachters.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCharachters.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.charachters = action.payload;
-      })
-      .addCase(getCharachters.rejected, (state) => {
+      .addCase(
+        getCharachters.fulfilled,
+        (state, action: PayloadAction<ICharactersResponse>) => {
+          state.error = action.payload.error || "";
+          state.status = "idle";
+          state.charachters = action.payload.results
+            ? action.payload
+            : initialResponse;
+        }
+      )
+      .addCase(getCharachters.rejected, (state, action) => {
         state.status = "failed";
-        console.log("REJECTED: ", state);
+        state.charachters = initialResponse;
+        state.error = action?.error?.message || "Something went wrong";
       });
   },
 });
@@ -51,6 +49,9 @@ export const {} = charachterSlice.actions;
 
 export const selectCharacter = (state: RootState) =>
   state.charachter.charachters;
+
+export const selectCharacterError = (state: RootState) =>
+  state.charachter.error;
 
 export const selectCharacterStatus = (state: RootState) =>
   state.charachter.status;

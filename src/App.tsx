@@ -1,3 +1,4 @@
+import React from "react";
 import { routes } from "app/routes";
 import Header from "components/Header";
 import { ErrorBoundary } from "react-error-boundary";
@@ -14,4 +15,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

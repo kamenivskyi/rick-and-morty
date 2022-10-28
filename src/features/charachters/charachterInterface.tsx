@@ -27,13 +27,21 @@ export interface ICharacterArrayItem {
   image: string;
 }
 
-export interface ICharactersObject {
-  info: IResponseInfo;
-  results: ICharacterArrayItem[];
-  message: string;
+export interface ICharactersResponse {
+  info?: IResponseInfo;
+  results?: ICharacterArrayItem[];
+  error?: string | any;
 }
 
 export interface ICharactersState {
-  charachters: ICharactersObject;
+  charachters: ICharactersResponse;
   status: "idle" | "loading" | "failed";
+  error: any;
+}
+
+export interface ISearchQueries {
+  page?: number | null;
+  status?: string;
+  gender?: string;
+  species?: string;
 }

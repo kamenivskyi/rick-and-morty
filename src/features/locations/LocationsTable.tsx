@@ -1,29 +1,43 @@
+import { useMemo } from "react";
 import { Container } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatFromUTC } from "utils/date";
-import { useDataGridRowCount, useDataPaginationHandler } from "hooks";
-import { ILocationResultsItem, ILocationsObject } from "./locationInterfaces";
-import { getLocations, selectLocation } from "./locationsSlice";
+import { useDataGridRowCount, useQueriesPagination } from "hooks";
+import { ILocationResultsItem, ILocationsResponce } from "./locationInterfaces";
+import {
+  getLocations,
+  selectLocation,
+  selectLocationError,
+} from "./locationsSlice";
 import { columns } from "./locationsData";
+import { DEFAULT_PAGE_SIZE } from "app/config";
 
 export default function LocationsTable() {
-  const locationsData = useAppSelector<ILocationsObject>(selectLocation);
-  const locations = locationsData.results.map((item: ILocationResultsItem) => ({
-    ...item,
-    created: formatFromUTC(item.created),
-  }));
+  const locationsData = useAppSelector<ILocationsResponce>(selectLocation);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const { page, handlePageChange } = useDataPaginationHandler("/locations");
-  const [rowCountState] = useDataGridRowCount(locationsData?.info?.count);
+  const { page, handlePageChange } = useQueriesPagination(
+    "/locations",
+    locationsData.info?.pages
+  );
+  const [rowCountState] = useDataGridRowCount(locationsData?.info?.count || 0);
+
+  const locations = useMemo(() => {
+    return locationsData.results
+      ? locationsData.results.map((item: ILocationResultsItem) => ({
+          ...item,
+          created: formatFromUTC(item.created),
+        }))
+      : [];
+  }, [locationsData.results]);
 
   useEffect(() => {
-    dispatch(getLocations(location.search));
-  }, [location.search, getLocations, dispatch]);
+    dispatch(getLocations(`?page=${page}`));
+  }, [page, getLocations, dispatch]);
 
   return (
     <Container maxWidth="lg">
@@ -31,7 +45,7 @@ export default function LocationsTable() {
         <DataGrid
           rows={locations}
           columns={columns}
-          pageSize={20}
+          pageSize={DEFAULT_PAGE_SIZE}
           rowCount={rowCountState}
           rowsPerPageOptions={[20]}
           checkboxSelection={false}
