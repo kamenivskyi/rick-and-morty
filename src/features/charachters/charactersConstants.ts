@@ -1,4 +1,4 @@
-export const species = [
+export const SPECIES_LIST = [
   { value: "all", label: "All" },
   { value: "human", label: "Human" },
   { value: "humanoid", label: "Humanoid" },
@@ -11,17 +11,28 @@ export const species = [
   { value: "robot", label: "Robot" },
 ];
 
-export const statuses = [
+export const STATUSES_LIST = [
   { value: "all", label: "All" },
   { value: "alive", label: "Alive" },
   { value: "dead", label: "Dead" },
   { value: "unknown", label: "Unknown" },
 ];
 
-export const genders = [
+export const GENDERS_LIST = [
   { value: "all", label: "All" },
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
   { value: "genderless", label: "Genderless" },
   { value: "unknown", label: "Unknown" },
 ];
+
+export const FILTERS = {
+  SPECIES: "species",
+  STATUS: "status",
+  GENDER: "gender",
+  DEFAULT_VALUES: {
+    SPECIES: "all",
+    STATUS: "all",
+    GENDER: "all",
+  },
+};

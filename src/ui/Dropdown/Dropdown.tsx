@@ -6,6 +6,7 @@ export function Dropdown({
   handleChange,
   array,
   label,
+  name,
 }: IProps): JSX.Element {
   const renderDropdownItem = (item: IDropdownItem) => (
     <MenuItem value={item.value} key={item.value}>
@@ -21,6 +22,7 @@ export function Dropdown({
         id="status-select"
         value={value}
         label={label}
+        name={name}
         onChange={handleChange}
       >
         {array.map(renderDropdownItem)}
