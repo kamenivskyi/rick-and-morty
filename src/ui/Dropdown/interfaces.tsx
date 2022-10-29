@@ -5,6 +5,7 @@ export interface IProps {
   value: string;
   array: IDropdownItem[];
   label: string;
+  name: string;
 }
 
 export interface IDropdownItem {

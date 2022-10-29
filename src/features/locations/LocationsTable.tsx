@@ -12,7 +12,7 @@ import {
   selectLocation,
   selectLocationError,
 } from "./locationsSlice";
-import { columns } from "./locationsData";
+import { columns } from "./locationsConstants";
 import { DEFAULT_PAGE_SIZE } from "app/config";
 
 export default function LocationsTable() {

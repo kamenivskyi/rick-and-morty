@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatFromUTC } from "utils/date";
 import { IEpisodesResponse, IEpisodesResultsItem } from "./episodesInterfaces";
 import { getEpisodes, selectEpisode } from "./episodesSlice";
-import { columns } from "./episodesData";
+import { columns } from "./episodesConstants";
 import { useDataGridRowCount, useQueriesPagination } from "hooks";
 import { DEFAULT_PAGE_SIZE } from "app/config";
 

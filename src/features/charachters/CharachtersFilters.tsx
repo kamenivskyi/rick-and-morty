@@ -1,18 +1,25 @@
 import { useEffect, useState } from "react";
 import { SelectChangeEvent, Grid, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import queryString, { ParsedQuery } from "query-string";
 import Dropdown from "ui/Dropdown";
-import { genders, species, statuses } from "./charactersData";
+import {
+  FILTERS,
+  GENDERS_LIST,
+  SPECIES_LIST,
+  STATUSES_LIST,
+} from "./charactersConstants";
 
 export function CharachtersFilters() {
-  const [specie, setSpecie] = useState<string>("all");
-  const [status, setStatus] = useState<string>("all");
-  const [gender, setGender] = useState<string>("all");
+  const [filters, setFilters] = useState({
+    species: FILTERS.DEFAULT_VALUES.SPECIES,
+    status: FILTERS.DEFAULT_VALUES.STATUS,
+    gender: FILTERS.DEFAULT_VALUES.GENDER,
+  });
   const location = useLocation();
   const navigate = useNavigate();
 
-  let queries = queryString.parse(location.search);
+  let queries: ParsedQuery<string> = queryString.parse(location.search);
 
   const handleChange = (value: string, propName: string) => {
     if (value === "all") {
@@ -25,36 +32,16 @@ export function CharachtersFilters() {
   };
 
   useEffect(() => {
-    function setDataFromQueryParams() {
-      Object.entries(queries).forEach(([key, value]: Array<string | any>) => {
-        switch (key) {
-          case "species":
-            setSpecie(value);
-            break;
-          case "gender":
-            setGender(value);
-            break;
-          case "status":
-            setStatus(value);
-            break;
-          default:
-            break;
-        }
+    function setFiltersFromQueryParams() {
+      Object.entries(queries).forEach(([key, value]: string[] | any[]) => {
+        setFilters((prevState) => ({ ...prevState, [key]: value }));
       });
     }
-    setDataFromQueryParams();
+    setFiltersFromQueryParams();
   }, [location.search]);
 
-  const handleGenderChange = (event: SelectChangeEvent) => {
-    handleChange(event.target.value, "gender");
-  };
-
-  const handleSpecieChange = (event: SelectChangeEvent) => {
-    handleChange(event.target.value, "species");
-  };
-
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    handleChange(event.target.value, "status");
+  const handleFilterChange = ({ target }: SelectChangeEvent) => {
+    handleChange(target.value, target.name);
   };
 
   return (
@@ -67,25 +54,28 @@ export function CharachtersFilters() {
       <Grid item xs={6} md={4} paddingLeft="0 !important">
         <Dropdown
           label="Species"
-          handleChange={handleSpecieChange}
-          array={species}
-          value={specie}
+          handleChange={handleFilterChange}
+          array={SPECIES_LIST}
+          name={FILTERS.SPECIES}
+          value={filters.species}
         />
       </Grid>
       <Grid item xs={6} md={4} paddingRight="16px">
         <Dropdown
           label="Status"
-          handleChange={handleStatusChange}
-          array={statuses}
-          value={status}
+          handleChange={handleFilterChange}
+          array={STATUSES_LIST}
+          name={FILTERS.STATUS}
+          value={filters.status}
         />
       </Grid>
       <Grid item xs={12} md={4} paddingLeft="0 !important" paddingRight="16px">
         <Dropdown
           label="Gender"
-          handleChange={handleGenderChange}
-          array={genders}
-          value={gender}
+          handleChange={handleFilterChange}
+          array={GENDERS_LIST}
+          name={FILTERS.GENDER}
+          value={filters.gender}
         />
       </Grid>
     </Grid>
